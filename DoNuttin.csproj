@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Pedal Do Nuttin' NET</AssemblyName>
+    <RootNamespace>WDE.DoNuttin</RootNamespace>
+    <Platforms>x64</Platforms>
+    <OutputPath>C:\Program Files\ReBuzz\gear\Effects</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="BuzzGUI.Interfaces">
+      <HintPath>C:\Program Files\ReBuzz\BuzzGUI.Interfaces.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
