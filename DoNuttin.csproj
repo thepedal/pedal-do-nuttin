@@ -11,6 +11,7 @@
     <OutputPath>C:\Program Files\ReBuzz\gear\Effects</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <NoWarn>MSB3277</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

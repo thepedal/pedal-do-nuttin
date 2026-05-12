@@ -11,7 +11,7 @@ using Buzz.MachineInterface;
 
 namespace WDE.DoNuttin
 {
-    [MachineDecl(Name = "Pedal Do Nuttin'", ShortName = "DoNut", Author = "WDE", MaxTracks = 0, InputCount = 1, OutputCount = 1)]
+    [MachineDecl(Name = "Do Nuttin'", ShortName = "DoNut", Author = "WDE", MaxTracks = 0, InputCount = 1, OutputCount = 1)]
     public class DoNuttinMachine : IBuzzMachine
     {
         IBuzzMachineHost host;
@@ -32,18 +32,30 @@ namespace WDE.DoNuttin
             this.host = host;
         }
 
-        [ParameterDecl(ValueDescriptions = new[] { "no", "yes" }, DefValue = 0, Description = "Pass audio through")]
+        // Bypass = yes: skip silence detection and copy unconditionally —
+        // the cheapest possible passthrough, no peak scan overhead.
+        // Bypass = no: full silence detection runs; Work() returns false
+        // when the input is silent, saving audio thread time.
+        [ParameterDecl(ValueDescriptions = new[] { "no", "yes" }, DefValue = 0, Description = "Bypass")]
         public bool Bypass { get; set; }
 
         public bool Work(Sample[] output, Sample[] input, int n, WorkModes mode)
         {
-            if (mode == WorkModes.WM_NOIO || Bypass)
+            if (mode == WorkModes.WM_NOIO)
             {
                 _silentBlocks = 0;
                 return false;
             }
 
-            // Scan the input block for any signal above the silence threshold.
+            if (Bypass)
+            {
+                // Bypass: unconditional passthrough, no scan, cheapest path.
+                for (int i = 0; i < n; i++)
+                    output[i] = input[i];
+                return true;
+            }
+
+            // Normal: scan for silence before committing to copy.
             float peak = 0f;
             for (int i = 0; i < n; i++)
             {
@@ -55,17 +67,14 @@ namespace WDE.DoNuttin
 
             if (peak < SILENCE_THRESHOLD)
             {
-                // Input is silent this block.
                 if (++_silentBlocks >= SILENCE_BLOCKS_REQUIRED)
-                    return false;   // no work, no output
+                    return false;
             }
             else
             {
-                // Signal present — reset the counter and fall through to copy.
                 _silentBlocks = 0;
             }
 
-            // Pass the input through to the output unchanged.
             for (int i = 0; i < n; i++)
                 output[i] = input[i];
 
