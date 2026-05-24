@@ -2,16 +2,23 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <OutputType>Library</OutputType>
     <AssemblyName>Pedal Do Nuttin' NET</AssemblyName>
     <RootNamespace>WDE.DoNuttin</RootNamespace>
     <Platforms>x64</Platforms>
-    <OutputPath>C:\Program Files\ReBuzz\gear\Effects</OutputPath>
+    <OutputPath>C:\Program Files\ReBuzz\Gear\Effects</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <NoWarn>MSB3277</NoWarn>
+
+    <!-- Mandatory deployment hygiene (Build §1.2): ReBuzz loads only the
+         .dll, so don't emit/deploy .pdb or .deps.json. -->
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
   </PropertyGroup>
 
   <ItemGroup>
